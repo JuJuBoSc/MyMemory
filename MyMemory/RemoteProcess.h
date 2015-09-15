@@ -39,6 +39,7 @@ namespace MyMemory {
 		bool WriteBytes(IntPtr lpAddress, array<byte>^ bBuffer);
 		bool WriteString(IntPtr lpAddress, Encoding^ encoding, String^ value);
 		bool WriteString(IntPtr lpAddress, String^ value) { return WriteString(lpAddress, Encoding::UTF8, value); }
+		MyMemory::Modules::RemoteModule^ GetModule(String^ name);
 
 
 		// Properties

@@ -133,6 +133,30 @@ bool MyMemory::RemoteProcess::WriteString(IntPtr lpAddress, Encoding^ encoding, 
 	return WriteBytes(lpAddress, encoding->GetBytes(value));
 }
 
+MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::GetModule(String^ name)
+{
+
+	HMODULE hMods[1024];
+	WCHAR buffer[MAX_PATH];
+	DWORD cbNeeded;
+	pin_ptr<const wchar_t> wName = PtrToStringChars(name);
+
+	if (EnumProcessModules(m_processHandle, hMods, sizeof(hMods), &cbNeeded))
+	{
+		for (int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
+		{
+			HMODULE hModule = hMods[i];
+			if (hModule && GetModuleBaseNameW(m_processHandle, hModule, buffer, sizeof(buffer)) && _wcsicmp(buffer, wName) == 0)
+			{
+				return gcnew MyMemory::Modules::RemoteModule(this, IntPtr(hModule));
+			}
+		}
+	}
+
+	return nullptr;
+
+}
+
 List<MyMemory::Modules::RemoteModule^>^ MyMemory::RemoteProcess::Modules::get()
 {
 

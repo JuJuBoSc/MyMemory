@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vcclr.h>
+
 #include <stdio.h>
 #include <Windows.h>
 #include <psapi.h>
