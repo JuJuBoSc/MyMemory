@@ -10,18 +10,18 @@
 
 #Simple documentation :
 
- 1. **Basic memory maniputation**
- 1.1 Initialize a RemoteProcess
- 1.2 Reading memory
- 1.3 Writing memory
- 2. **Modules informations**
- 2.1 Enumerate modules 
- 3. **Threads informations**
- 3.1 Enumerate threads
- 3.2 Manipulate thread context
- 4. **Assembly**
- 4.1 Use Yasm
- 4.2 Assemble mnemonics
+ - 1 - **Basic memory maniputation**
+  - 1.1 - Initialize a RemoteProcess
+  - 1.2 - Reading memory
+  - 1.3 - Writing memory
+ - 2 - **Modules informations**
+  - 2.1 - Enumerate modules 
+ - 3 - **Threads informations**
+  - 3.1 - Enumerate threads
+  - 3.2 - Manipulate thread context
+ - 4 - **Assembly**
+  - 4.1 - Use Yasm
+  - 4.2 - Assemble mnemonics
 
 
 # 1 - Basic memory manipulation
@@ -30,46 +30,61 @@
 
 Simply make a new instance of **MyMemory.RemoteProcess** and call **RemoteProcess.Open(uint processId)** :
 
-    var process = new MyMemory.RemoteProcess();
-    bool processOpened = process.Open(1234); // adjust process id
+```csharp
+var process = new MyMemory.RemoteProcess();
+bool processOpened = process.Open(1234); // adjust process id
+```
 
 ## 1.2 Reading memory
 
-    var result = process.Read<int>(new IntPtr(0xDEADBEEF));
+```csharp
+var result = process.Read<int>(new IntPtr(0xDEADBEEF));
+```
 
 ## 1.3 Writing memory
 
-    var writeSuccess = process.Write<int>(new IntPtr(0xDEADBEEF), 1234);
+```csharp
+var writeSuccess = process.Write<int>(new IntPtr(0xDEADBEEF), 1234);
+```
 
 # 2 - Modules informations
 
 ## 2.1 Enumerate modules
-    foreach (var remoteModule in process.Modules)
-    {
-	    Console.WriteLine("Name : {0}", remoteModule.BaseName);
-        Console.WriteLine("BaseAddress : 0x{0:X}", remoteModule.BaseAddress.ToInt64());
-        Console.WriteLine("Size : 0x{0:X}", remoteModule.Size);
-    }
+
+```csharp
+foreach (var remoteModule in process.Modules)
+{
+    Console.WriteLine("Name : {0}", remoteModule.BaseName);
+    Console.WriteLine("BaseAddress : 0x{0:X}", remoteModule.BaseAddress.ToInt64());
+    Console.WriteLine("Size : 0x{0:X}", remoteModule.Size);
+}
+```
 
 # 3 - Threads informations
 
 ## 3.1 Enumerate  threads
-    foreach (var remoteThread in process.Threads)
-    {
-	    Console.WriteLine("ThreadId : {0}", remoteThread.ThreadId);
-    }
+
+```csharp
+foreach (var remoteThread in process.Threads)
+{
+    Console.WriteLine("ThreadId : {0}", remoteThread.ThreadId);
+}
+```
 
 ## 3.2 Manipulate thread context
-    if (remoteThread.SuspendThread())
+
+```csharp
+if (remoteThread.SuspendThread())
+{
+    MyMemory.Structures.ThreadContext ctx;
+    if (remoteThread.GetThreadContext(out ctx))
     {
-        MyMemory.Structures.ThreadContext ctx;
-        if (remoteThread.GetThreadContext(out ctx))
-        {
-            ctx.Rip = 0; // Don't do that for real, just proof of concept !
-            remoteThread.SetThreadContext(ref ctx);
-        }
-        remoteThread.ResumeThread();
+        ctx.Rip = 0; // Don't do that for real, just proof of concept !
+        remoteThread.SetThreadContext(ref ctx);
     }
+    remoteThread.ResumeThread();
+}
+```
 
 # 4 - Assembly
 
@@ -80,15 +95,20 @@ Simply make a new instance of **MyMemory.RemoteProcess** and call **RemoteProces
 
 First, you need to create a new instance of Yasm :
 
-    var yasm32 = new MyMemory.Assembly.Yasm(process, 1024, 32); 
-    // Create a new Yasm instance with a 1024 bytes buffer, for 32 bits
-          
-    var yasm64 = new MyMemory.Assembly.Yasm(process, 1024, 64); 
-    // Create a new Yasm instance with a 1024 bytes buffer, for 64 bits
+
+```csharp
+var yasm32 = new MyMemory.Assembly.Yasm(process, 1024, 32); 
+// Create a new Yasm instance with a 1024 bytes buffer, for 32 bits
+
+var yasm64 = new MyMemory.Assembly.Yasm(process, 1024, 64); 
+// Create a new Yasm instance with a 1024 bytes buffer, for 64 bits
+```
 
 You can also use the already instanced Yasm property in RemoteProcess class :
 
-    var yasm = process.Yasm;
+```csharp
+var yasm = process.Yasm;
+```
 
 > **Note : the RemoteProcess.Yasm by default match the current process architecture.**
 
@@ -96,10 +116,12 @@ You can also use the already instanced Yasm property in RemoteProcess class :
 
 That's pretty simple, the Yasm.Assemble function take the mnemonics as a string array, and return the result as byte array :
 
-    string[] mnemonics = { "mov rax, 1", "retn" };
-    byte[] opcodes = process.Yasm.Assemble(mnemonics);
+```csharp
+string[] mnemonics = { "mov rax, 1", "retn" };
+byte[] opcodes = process.Yasm.Assemble(mnemonics);
 
-    // Output : 48 C7 C0 01 00 00 00 C3
+// Output : 48 C7 C0 01 00 00 00 C3
+```
 
 
 # Credits
