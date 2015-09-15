@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Pch">
+      <UniqueIdentifier>{aceeb032-0510-4245-98fe-cff0aab7a7d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Pch">
+      <UniqueIdentifier>{c44642ff-ae77-4ed7-b06b-ffc21e3deb4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Utils">
+      <UniqueIdentifier>{d2efdc3a-a549-4938-9b28-0af6b3ea58e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Utils">
+      <UniqueIdentifier>{fd773c30-c592-49ad-9305-d822db6c7323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Memory">
+      <UniqueIdentifier>{3242ba7a-f114-4663-975b-64a7f8f62608}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Memory">
+      <UniqueIdentifier>{67aa63e0-36e3-4788-8cbb-4ea0abd21eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Assembly">
+      <UniqueIdentifier>{e1779c31-919f-49c0-9f2c-f3efff822786}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Assembly">
+      <UniqueIdentifier>{11227e0c-73c7-4c20-8ae7-655780aaba4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Hooking">
+      <UniqueIdentifier>{6de8cb14-4a13-46ed-8c82-e3243878b376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Hooking">
+      <UniqueIdentifier>{b57ab3d4-2b90-4475-819d-c021f70196e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Modules">
+      <UniqueIdentifier>{cc5ff2aa-b72f-4a77-938a-e603120b7f67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Modules">
+      <UniqueIdentifier>{75825276-1f42-42b6-8f92-91585cf0c527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Threads">
+      <UniqueIdentifier>{ca3d5c3c-3421-47b5-83c9-921c0881e23d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Threads">
+      <UniqueIdentifier>{9b807742-9b90-47ca-a946-4707380a50e5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="RemoteProcess.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Pch\StdAfx.h">
+      <Filter>Fichiers d%27en-tête\Pch</Filter>
+    </ClInclude>
+    <ClInclude Include="Imports.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\MarshalCache.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\RemotePointer.h">
+      <Filter>Fichiers d%27en-tête\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Assembly\Yasm.h">
+      <Filter>Fichiers d%27en-tête\Assembly</Filter>
+    </ClInclude>
+    <ClInclude Include="Modules\RemoteModule.h">
+      <Filter>Fichiers d%27en-tête\Modules</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="RemoteProcess.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Pch\StdAfx.cpp">
+      <Filter>Fichiers sources\Pch</Filter>
+    </ClCompile>
+    <ClCompile Include="Imports.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\MarshalCache.cpp">
+      <Filter>Fichiers sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\RemotePointer.cpp">
+      <Filter>Fichiers sources\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Assembly\Yasm.cpp">
+      <Filter>Fichiers sources\Assembly</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\RemoteModule.cpp">
+      <Filter>Fichiers sources\Modules</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
