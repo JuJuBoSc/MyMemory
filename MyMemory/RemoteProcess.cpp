@@ -180,3 +180,30 @@ List<MyMemory::Modules::RemoteModule^>^ MyMemory::RemoteProcess::Modules::get()
 	return results;
 
 }
+
+List<MyMemory::Threads::RemoteThread^>^ MyMemory::RemoteProcess::Threads::get()
+{
+
+	List<MyMemory::Threads::RemoteThread^>^ results = gcnew List<MyMemory::Threads::RemoteThread^>();
+
+	HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+	if (hThreadSnap == INVALID_HANDLE_VALUE)
+		return results;
+	
+	THREADENTRY32 te32;
+	te32.dwSize = sizeof(THREADENTRY32);
+
+	if (!Thread32First(hThreadSnap, &te32))
+		return results;
+
+	do
+	{
+		if (te32.th32OwnerProcessID == m_processId)
+		{
+			results->Add(gcnew MyMemory::Threads::RemoteThread(this, te32.th32ThreadID));
+		}
+	} while (Thread32Next(hThreadSnap, &te32));
+
+	return results;
+
+}

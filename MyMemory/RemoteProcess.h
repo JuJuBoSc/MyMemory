@@ -11,6 +11,9 @@ namespace MyMemory {
 	namespace Modules {
 		ref class RemoteModule;
 	}
+	namespace Threads {
+		ref class RemoteThread;
+	}
 }
 
 namespace MyMemory {
@@ -58,6 +61,9 @@ namespace MyMemory {
 		}
 		property List<MyMemory::Modules::RemoteModule^>^ Modules {
 			List<MyMemory::Modules::RemoteModule^>^ get();
+		}
+		property List<MyMemory::Threads::RemoteThread^>^ Threads {
+			List<MyMemory::Threads::RemoteThread^>^ get();
 		}
 
 	};

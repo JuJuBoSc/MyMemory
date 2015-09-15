@@ -78,6 +78,9 @@
     <ClInclude Include="Modules\RemoteModule.h">
       <Filter>Fichiers d%27en-tête\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Threads\RemoteThread.h">
+      <Filter>Fichiers d%27en-tête\Threads</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -103,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Modules\RemoteModule.cpp">
       <Filter>Fichiers sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Threads\RemoteThread.cpp">
+      <Filter>Fichiers sources\Threads</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

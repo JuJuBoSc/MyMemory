@@ -165,6 +165,7 @@
     <ClInclude Include="Modules\RemoteModule.h" />
     <ClInclude Include="Pch\StdAfx.h" />
     <ClInclude Include="RemoteProcess.h" />
+    <ClInclude Include="Threads\RemoteThread.h" />
     <ClInclude Include="Utils\MarshalCache.h" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     <ClCompile Include="Modules\RemoteModule.cpp" />
     <ClCompile Include="Pch\StdAfx.cpp" />
     <ClCompile Include="RemoteProcess.cpp" />
+    <ClCompile Include="Threads\RemoteThread.cpp" />
     <ClCompile Include="Utils\MarshalCache.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
