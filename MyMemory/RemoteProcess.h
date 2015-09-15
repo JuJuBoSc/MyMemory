@@ -65,6 +65,9 @@ namespace MyMemory {
 		property List<MyMemory::Threads::RemoteThread^>^ Threads {
 			List<MyMemory::Threads::RemoteThread^>^ get();
 		}
+		property MyMemory::Modules::RemoteModule^ default[String^]{
+			MyMemory::Modules::RemoteModule^ get(String^);
+		}
 
 	};
 }

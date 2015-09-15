@@ -162,9 +162,11 @@
     <ClInclude Include="Assembly\Yasm.h" />
     <ClInclude Include="Imports.h" />
     <ClInclude Include="Memory\RemotePointer.h" />
+    <ClInclude Include="Memory\RemoteRegion.h" />
     <ClInclude Include="Modules\RemoteModule.h" />
     <ClInclude Include="Pch\StdAfx.h" />
     <ClInclude Include="RemoteProcess.h" />
+    <ClInclude Include="Structures.h" />
     <ClInclude Include="Threads\RemoteThread.h" />
     <ClInclude Include="Utils\MarshalCache.h" />
   </ItemGroup>
@@ -173,6 +175,7 @@
     <ClCompile Include="Assembly\Yasm.cpp" />
     <ClCompile Include="Imports.cpp" />
     <ClCompile Include="Memory\RemotePointer.cpp" />
+    <ClCompile Include="Memory\RemoteRegion.cpp" />
     <ClCompile Include="Modules\RemoteModule.cpp" />
     <ClCompile Include="Pch\StdAfx.cpp" />
     <ClCompile Include="RemoteProcess.cpp" />

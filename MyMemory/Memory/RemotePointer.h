@@ -38,6 +38,9 @@ namespace MyMemory {
 			property RemoteProcess^ Process {
 				RemoteProcess^ get() { return m_remoteProcess; }
 			}
+			property IntPtr vTable {
+				IntPtr get() { return Read<IntPtr>(); }
+			}
 			property IntPtr Pointer {
 				IntPtr get() { return m_pointer; }
 				void set(IntPtr value) { 

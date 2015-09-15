@@ -143,7 +143,7 @@ MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::GetModule(String^ name
 
 	if (EnumProcessModules(m_processHandle, hMods, sizeof(hMods), &cbNeeded))
 	{
-		for (int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
+		for (unsigned int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
 		{
 			HMODULE hModule = hMods[i];
 			if (hModule && GetModuleBaseNameW(m_processHandle, hModule, buffer, sizeof(buffer)) && _wcsicmp(buffer, wName) == 0)
@@ -157,17 +157,22 @@ MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::GetModule(String^ name
 
 }
 
+MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::default::get(String^ s)
+{
+	return GetModule(s);
+}
+
 List<MyMemory::Modules::RemoteModule^>^ MyMemory::RemoteProcess::Modules::get()
 {
 
 	List<MyMemory::Modules::RemoteModule^>^ results = gcnew List<MyMemory::Modules::RemoteModule^>();
-
+	
 	HMODULE hMods[1024];
 	DWORD cbNeeded;
 
 	if (EnumProcessModules(m_processHandle, hMods, sizeof(hMods), &cbNeeded))
 	{
-		for (int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
+		for (unsigned int i = 0; i < (cbNeeded / sizeof(HMODULE)); i++)
 		{
 			HMODULE hModule = hMods[i];
 			if (hModule)

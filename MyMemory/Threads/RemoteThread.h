@@ -20,6 +20,8 @@ namespace MyMemory {
 			~RemoteThread();
 			bool SuspendThread();
 			bool ResumeThread();
+			bool GetThreadContext([Out] MyMemory::Structures::ThreadContext% context);
+			bool SetThreadContext(MyMemory::Structures::ThreadContext% context);
 
 			// Properties
 		public:
@@ -31,6 +33,9 @@ namespace MyMemory {
 			}
 			property IntPtr ThreadHandle {
 				IntPtr get() { return IntPtr(m_threadHandle); }
+			}
+			property unsigned long ExitCodeThread {
+				unsigned long get();
 			}
 
 		};
