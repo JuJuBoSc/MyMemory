@@ -16,6 +16,7 @@ namespace MyMemory {
 	}
 	namespace Memory {
 		ref class RemoteMemoryProtection;
+		ref class RemoteAllocatedMemory;
 	}
 }
 
@@ -48,6 +49,8 @@ namespace MyMemory {
 		bool WriteString(IntPtr lpAddress, String^ value) { return WriteString(lpAddress, Encoding::UTF8, value); }
 		MyMemory::Modules::RemoteModule^ GetModule(String^ name);
 		MyMemory::Memory::RemoteMemoryProtection^ ProtectMemory(IntPtr pointer, unsigned long size, Enumerations::MemoryProtectionFlags newProtection);
+		MyMemory::Memory::RemoteAllocatedMemory^ AllocateMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection);
+		MyMemory::Memory::RemoteAllocatedMemory^ AllocateMemory(unsigned long size) { return AllocateMemory(size, MyMemory::Enumerations::MemoryProtectionFlags::ExecuteReadWrite); }
 
 		// Methods
 	private:

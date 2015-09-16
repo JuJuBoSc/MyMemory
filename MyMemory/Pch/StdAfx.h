@@ -16,5 +16,6 @@
 #include <Memory/RemotePointer.h>
 #include <Memory/RemoteRegion.h>
 #include <Memory/RemoteMemoryProtection.h>
+#include <Memory/RemoteAllocatedMemory.h>
 #include <Modules/RemoteModule.h>
 #include <Threads/RemoteThread.h>

@@ -12,6 +12,7 @@ MyMemory::RemoteProcess::~RemoteProcess()
 	Close();
 }
 
+
 bool MyMemory::RemoteProcess::Open(unsigned int processId)
 {
 
@@ -184,6 +185,13 @@ MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::GetModule(String^ name
 MyMemory::Memory::RemoteMemoryProtection^ MyMemory::RemoteProcess::ProtectMemory(IntPtr pointer, unsigned long size, Enumerations::MemoryProtectionFlags newProtection)
 {
 	return gcnew MyMemory::Memory::RemoteMemoryProtection(this, pointer, size, newProtection);
+}
+
+MyMemory::Memory::RemoteAllocatedMemory^ MyMemory::RemoteProcess::AllocateMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection)
+{
+	void* ptr = nullptr;
+	NtAllocateVirtualMemory(m_processHandle, &ptr, 0, &size, MEM_COMMIT | MEM_RESERVE, (ULONG)protection);
+	return gcnew MyMemory::Memory::RemoteAllocatedMemory(this, IntPtr(ptr), size, protection);
 }
 
 MyMemory::Threads::RemoteThread^ MyMemory::RemoteProcess::GetMainThread()

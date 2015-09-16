@@ -162,6 +162,7 @@
     <ClInclude Include="Assembly\Yasm.h" />
     <ClInclude Include="Enumerations.h" />
     <ClInclude Include="Imports.h" />
+    <ClInclude Include="Memory\RemoteAllocatedMemory.h" />
     <ClInclude Include="Memory\RemoteMemoryProtection.h" />
     <ClInclude Include="Memory\RemotePointer.h" />
     <ClInclude Include="Memory\RemoteRegion.h" />
@@ -176,6 +177,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Assembly\Yasm.cpp" />
     <ClCompile Include="Imports.cpp" />
+    <ClCompile Include="Memory\RemoteAllocatedMemory.cpp" />
     <ClCompile Include="Memory\RemoteMemoryProtection.cpp" />
     <ClCompile Include="Memory\RemotePointer.cpp" />
     <ClCompile Include="Memory\RemoteRegion.cpp" />

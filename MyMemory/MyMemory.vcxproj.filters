@@ -93,6 +93,9 @@
     <ClInclude Include="Enumerations.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\RemoteAllocatedMemory.h">
+      <Filter>Fichiers d%27en-tête\Memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -126,6 +129,9 @@
       <Filter>Fichiers sources\Memory</Filter>
     </ClCompile>
     <ClCompile Include="Memory\RemoteMemoryProtection.cpp">
+      <Filter>Fichiers sources\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\RemoteAllocatedMemory.cpp">
       <Filter>Fichiers sources\Memory</Filter>
     </ClCompile>
   </ItemGroup>

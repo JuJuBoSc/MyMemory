@@ -15,6 +15,7 @@
   - 1.2 - Reading memory
   - 1.3 - Writing memory
   - 1.4 - Protect memory
+  - 1.5 - Allocate memory
  - 2 - **Modules informations**
   - 2.1 - Enumerate modules 
  - 3 - **Threads informations**
@@ -58,6 +59,24 @@ using (var protection = process.ProtectMemory(new IntPtr(0x9A0000), 0x1000, Enum
     // Protect the memory at address 0x9A0000 with a length 0x1000
     // ProtectMemory return an RemoteMemoryProtection instance
     // The memory protection is restored when .Dispose() is called
+}
+```
+
+## 1.5 Allocate memory
+
+Allocate memory in the process, the RemoteAllocatedMemory class implement IDisposable so it can be used in an using block :
+
+```csharp
+using (var allocatedMemory = process.AllocateMemory(1000))
+{
+    Console.WriteLine("BaseAddress : 0x{0}", allocatedMemory.Pointer.ToInt64());
+    // You can also get chunk from this allocated memory
+    var chunk1 = allocatedMemory.AllocateOfChunk("chunkName1", 4);
+    var chunk2 = allocatedMemory.AllocateOfChunk("chunkName2", 4);
+    // And write in them
+    allocatedMemory.Write<int>("chunkName1", 123);
+    // Or read them
+    int value = allocatedMemory.Read<int>("chunkName1");
 }
 ```
 
