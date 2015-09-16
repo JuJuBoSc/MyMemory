@@ -3,6 +3,7 @@
 MyMemory::Modules::ModulesManager::ModulesManager(RemoteProcess^ remoteProcess)
 {
 	m_remoteProcess = remoteProcess;
+	m_mainModule = GetMainModule();
 }
 
 MyMemory::Modules::RemoteModule^ MyMemory::Modules::ModulesManager::default::get(String^ s)
@@ -28,6 +29,22 @@ MyMemory::Modules::RemoteModule^ MyMemory::Modules::ModulesManager::GetModule(St
 				return gcnew MyMemory::Modules::RemoteModule(m_remoteProcess, IntPtr(hModule));
 			}
 		}
+	}
+
+	return nullptr;
+
+}
+
+MyMemory::Modules::RemoteModule^ MyMemory::Modules::ModulesManager::GetMainModule()
+{
+
+	HMODULE hMods[sizeof(HMODULE)];
+	DWORD cbNeeded;
+
+	if (EnumProcessModules(m_remoteProcess->ProcessHandle.ToPointer(), hMods, sizeof(hMods), &cbNeeded) && cbNeeded > 0)
+	{
+		HMODULE hModule = hMods[0];
+		return gcnew RemoteModule(m_remoteProcess, IntPtr(hModule));
 	}
 
 	return nullptr;

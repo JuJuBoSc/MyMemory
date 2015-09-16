@@ -8,6 +8,18 @@
 > 
 > This also apply to WOW64 process, x86 process on x64 OS, MyMemory need to be compiled as x86.
 
+
+# Credits
+- Mercury because that's mainly because of you I fall in this world.
+- Apoc for it's MarshalCache class and many clean win32 implementation.
+- DrakeFish as you did the first version of VEH in assembly for me.
+- Cypher for being awesome and helped me with many undocumented stuff (and because he like yelling at everyone).
+- Shynd because he is a wizard doing black magic.
+- Master674 you helped me in many differents area, unrelated to this project, but had to put your name.
+- ZenLulz for good implementation in it's MemorySharp project that gave me many ideas.
+- Nesox's cat.
+- Cromon because I had some fun time reading you on Skype group while coding.
+
 #Simple documentation :
 
  - 1 - **Basic memory maniputation**
@@ -156,9 +168,3 @@ byte[] opcodes = process.Yasm.Assemble(mnemonics);
 
 // Output : 48 C7 C0 01 00 00 00 C3
 ```
-
-
-# Credits
-- Apoc for it's MarshalCache class and many clean win32 implementation.
-- Cypher for being awesome and helped me with many undocumented stuff.
-- ZenLulz for good implementation in it's MemorySharp project that gave me many ideas.
