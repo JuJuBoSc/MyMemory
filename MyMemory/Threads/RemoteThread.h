@@ -17,11 +17,14 @@ namespace MyMemory {
 			// Methods
 		public:
 			RemoteThread(RemoteProcess^ process, unsigned long threadId);
+			RemoteThread(RemoteProcess^ process, IntPtr threadHandle);
 			~RemoteThread();
 			bool SuspendThread();
 			bool ResumeThread();
 			bool GetThreadContext([Out] MyMemory::Structures::ThreadContext% context);
 			bool SetThreadContext(MyMemory::Structures::ThreadContext% context);
+			bool TerminateThread(unsigned long exitCode);
+			void Join();
 
 			// Properties
 		public:

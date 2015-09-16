@@ -6,6 +6,20 @@ MyMemory::Threads::ThreadsManager::ThreadsManager(RemoteProcess^ remoteProcess)
 	m_mainThread = GetMainThread();
 }
 
+MyMemory::Threads::RemoteThread^ MyMemory::Threads::ThreadsManager::CreateRemoteThread(IntPtr lpStartAddress, IntPtr parameter, Enumerations::ThreadCreationFlags threadCreationFlags)
+{
+
+	HANDLE hThread;
+	hThread = ::CreateRemoteThread(m_remoteProcess->ProcessHandle.ToPointer(), nullptr, 0, (LPTHREAD_START_ROUTINE)lpStartAddress.ToPointer(), lpStartAddress.ToPointer(), (DWORD)threadCreationFlags, nullptr);
+	if (hThread)
+	{
+		return gcnew MyMemory::Threads::RemoteThread(m_remoteProcess, IntPtr(hThread));
+	}
+
+	return nullptr;
+
+}
+
 MyMemory::Threads::RemoteThread^ MyMemory::Threads::ThreadsManager::GetMainThread()
 {
 	MyMemory::Threads::RemoteThread^ mainTread = nullptr;

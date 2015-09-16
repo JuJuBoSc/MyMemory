@@ -24,6 +24,13 @@ namespace MyMemory {
 			NoCacheModifierflag = 0x200,
 			WriteCombineModifierflag = 0x400
 		};
+		[Flags]
+		enum class ThreadCreationFlags : unsigned int
+		{
+			Run = 0x0,
+			Suspended = 0x04,
+			StackSizeParamIsAReservation = 0x10000
+		};
 
 	};
 }

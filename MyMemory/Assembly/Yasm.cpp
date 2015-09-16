@@ -39,6 +39,16 @@ array<byte>^ MyMemory::Assembly::Yasm::Assemble(array<String^>^ mnemonics, IntPt
 
 		IntPtr pBuffer = Marshal::StringToHGlobalAnsi(sb.ToString());
 		int len = _yasm_Assemble((const char*)pBuffer.ToPointer(), m_pBuffer.ToPointer(), m_bufferSize);
+
+		if (len == -1)
+			throw gcnew Exception("Yasm error : Invalid mnemonics !");
+
+		if (len == -2)
+			throw gcnew OutOfMemoryException("Yasm error : The buffer was too small !");
+
+		if (len == -3)
+			throw gcnew Exception("Yasm error : Internal yasm error !");
+
 		array<byte>^ result = gcnew array<byte>(len);
 		pin_ptr<Byte> pResult = &result[0];
 		memcpy(pResult, m_pBuffer.ToPointer(), len);
@@ -50,5 +60,64 @@ array<byte>^ MyMemory::Assembly::Yasm::Assemble(array<String^>^ mnemonics, IntPt
 	finally
 	{
 		Monitor::Exit(this);
+	}
+}
+
+bool MyMemory::Assembly::Yasm::Inject(array<String^>^ mnemonics, IntPtr lpAddress)
+{
+	return m_remoteProcess->MemoryManager->WriteBytes(lpAddress, Assemble(mnemonics, lpAddress));
+}
+
+System::IntPtr MyMemory::Assembly::Yasm::InjectAndExecute(array<String^>^ mnemonics, IntPtr lpAddress)
+{
+	Memory::RemoteAllocatedMemory^ allocatedMemory = m_remoteProcess->MemoryManager->AllocateMemory(500);
+	try
+	{
+
+		IntPtr pResult = allocatedMemory->AllocateOfChunk("Result", Utils::MarshalCache<IntPtr>::Size);
+		IntPtr pCallGate = allocatedMemory->AllocateOfChunk("CallGate", 256);
+		Inject(mnemonics, lpAddress);
+
+#if _WIN64 || __amd64__
+		array<String^>^ asmCallGate = gcnew array<String^>
+		{	
+				"call " + lpAddress,
+				"mov [" + pResult + "], rax",
+				"retn"
+		};
+#else
+		array<String^>^ asmCallGate = gcnew array<String^>
+		{
+				"call " + lpAddress,
+				"mov [" + pResult + "], eax",
+				"retn"
+		};
+
+#endif
+
+		Inject(asmCallGate, pCallGate);
+
+		Threads::RemoteThread^ remoteThread = m_remoteProcess->ThreadsManager->CreateRemoteThread(pCallGate);
+		remoteThread->Join();
+
+		return m_remoteProcess->MemoryManager->Read<IntPtr>(pResult);
+
+	}
+	finally
+	{
+		delete allocatedMemory;
+	}
+}
+
+System::IntPtr MyMemory::Assembly::Yasm::InjectAndExecute(array<String^>^ mnemonics)
+{
+	MyMemory::Memory::RemoteAllocatedMemory^ allocatedMemory = m_remoteProcess->MemoryManager->AllocateMemory(m_bufferSize);
+	try
+	{
+		return InjectAndExecute(mnemonics, allocatedMemory->Pointer);
+	}
+	finally
+	{
+		delete allocatedMemory;
 	}
 }

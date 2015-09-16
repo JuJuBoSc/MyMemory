@@ -36,6 +36,8 @@
  - 4 - **Assembly**
   - 4.1 - Use Yasm
   - 4.2 - Assemble mnemonics
+  - 4.3 - Inject mnemonics
+  - 4.4 - Execute mnemonics
 
 
 # 1 - Basic memory manipulation
@@ -168,3 +170,23 @@ byte[] opcodes = process.Yasm.Assemble(mnemonics);
 
 // Output : 48 C7 C0 01 00 00 00 C3
 ```
+
+## 4.3 Inject mnemonics
+
+```csharp
+var mnemonics = new[] {"mov eax, 123", "retn"};
+var allocatedMemory = process.MemoryManager.AllocateMemory(1000);
+bool injected = process.Yasm.Inject(mnemonics, allocatedMemory.Pointer);
+```
+
+> **Note : Yasm will automatically change absolute address to relative one using the allocated memory pointer.**
+
+## 4.4 Execute mnemonics
+
+```csharp
+var mnemonics = new[] {"mov eax, 123", "retn"};
+var result = process.Yasm.InjectAndExecute(mnemonics);
+// result = 123
+```
+
+> **Note : InjectAndExecute will return the value contained in EAX/RAX at the end of the call automatically.**

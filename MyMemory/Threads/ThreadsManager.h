@@ -16,6 +16,9 @@ namespace MyMemory {
 			// Methods
 		public:
 			ThreadsManager(RemoteProcess^ remoteProcess);
+			MyMemory::Threads::RemoteThread^ CreateRemoteThread(IntPtr lpStartAddress, IntPtr parameter, Enumerations::ThreadCreationFlags threadCreationFlags);
+			MyMemory::Threads::RemoteThread^ CreateRemoteThread(IntPtr lpStartAddress, IntPtr parameter) { return CreateRemoteThread(lpStartAddress, parameter, Enumerations::ThreadCreationFlags::Run); }
+			MyMemory::Threads::RemoteThread^ CreateRemoteThread(IntPtr lpStartAddress) { return CreateRemoteThread(lpStartAddress, IntPtr(nullptr)); }
 			
 			// Methods
 		private:

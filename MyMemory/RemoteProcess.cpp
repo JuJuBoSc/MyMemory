@@ -4,7 +4,11 @@ using namespace System::Runtime::InteropServices;
 
 MyMemory::RemoteProcess::RemoteProcess()
 {
-	m_yasm = gcnew MyMemory::Assembly::Yasm(this, 20480, Environment::Is64BitProcess ? 64 : 32);
+#if _WIN64 || __amd64__
+	m_yasm = gcnew MyMemory::Assembly::Yasm(this, 20480, 64);
+#else
+	m_yasm = gcnew MyMemory::Assembly::Yasm(this, 20480, 32);
+#endif
 }
 
 MyMemory::RemoteProcess::~RemoteProcess()
@@ -27,18 +31,16 @@ bool MyMemory::RemoteProcess::Open(unsigned int processId)
 	if (!NT_SUCCESS(NtOpenProcess(&hProcess, PROCESS_ALL_ACCESS, &oa, &clientId)))
 		return false;
 
+	bool remoteIs64Bits = false;
+
 	if (Environment::Is64BitOperatingSystem)
 	{
 		BOOL Wow64Process;
 		IsWow64Process(hProcess, &Wow64Process);
-		m_is64BitsProcess = !Wow64Process;
-	}
-	else
-	{
-		m_is64BitsProcess = false;
+		remoteIs64Bits = !Wow64Process;
 	}
 
-	if (m_is64BitsProcess != Environment::Is64BitProcess)
+	if (remoteIs64Bits != Environment::Is64BitProcess)
 		throw gcnew NotSupportedException("Attempt to attach on different architecture process !");
 
 	m_processHandle = hProcess;

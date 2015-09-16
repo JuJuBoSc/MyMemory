@@ -31,7 +31,6 @@ namespace MyMemory {
 	private:
 		unsigned int m_processId;
 		void* m_processHandle;
-		bool m_is64BitsProcess;
 		MyMemory::Assembly::Yasm^ m_yasm;
 		MyMemory::Memory::MemoryManager^ m_memoryManager;
 		MyMemory::Modules::ModulesManager^ m_modulesManager;
@@ -63,9 +62,6 @@ namespace MyMemory {
 		}
 		property IntPtr ProcessHandle {
 			IntPtr get() { return (IntPtr)m_processHandle; }
-		}
-		property bool Is64BitsProcess {
-			bool get() { return m_is64BitsProcess; }
 		}
 
 	};

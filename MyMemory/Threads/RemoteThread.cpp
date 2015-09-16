@@ -19,6 +19,13 @@ MyMemory::Threads::RemoteThread::RemoteThread(RemoteProcess^ process, unsigned l
 
 }
 
+MyMemory::Threads::RemoteThread::RemoteThread(RemoteProcess^ process, IntPtr threadHandle)
+{
+	m_remoteProcess = process;
+	m_threadHandle = threadHandle.ToPointer();
+	m_threadId = GetThreadId(m_threadHandle);
+}
+
 MyMemory::Threads::RemoteThread::~RemoteThread()
 {
 	if (m_threadHandle)
@@ -72,6 +79,16 @@ bool MyMemory::Threads::RemoteThread::SetThreadContext(MyMemory::Structures::Thr
 	{
 		_aligned_free(pCtx);
 	}
+}
+
+bool MyMemory::Threads::RemoteThread::TerminateThread(unsigned long exitCode)
+{
+	return ::TerminateThread(m_threadHandle, exitCode) != 0;
+}
+
+void MyMemory::Threads::RemoteThread::Join()
+{
+	NtWaitForSingleObject(m_threadHandle, FALSE, NULL);
 }
 
 unsigned long MyMemory::Threads::RemoteThread::ExitCodeThread::get()
