@@ -96,6 +96,15 @@
     <ClInclude Include="Memory\RemoteAllocatedMemory.h">
       <Filter>Fichiers d%27en-tête\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="Modules\ModulesManager.h">
+      <Filter>Fichiers d%27en-tête\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory\MemoryManager.h">
+      <Filter>Fichiers d%27en-tête\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Threads\ThreadsManager.h">
+      <Filter>Fichiers d%27en-tête\Threads</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -133,6 +142,15 @@
     </ClCompile>
     <ClCompile Include="Memory\RemoteAllocatedMemory.cpp">
       <Filter>Fichiers sources\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Modules\ModulesManager.cpp">
+      <Filter>Fichiers sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\MemoryManager.cpp">
+      <Filter>Fichiers sources\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Threads\ThreadsManager.cpp">
+      <Filter>Fichiers sources\Threads</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

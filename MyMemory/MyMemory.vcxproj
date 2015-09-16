@@ -162,29 +162,35 @@
     <ClInclude Include="Assembly\Yasm.h" />
     <ClInclude Include="Enumerations.h" />
     <ClInclude Include="Imports.h" />
+    <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\RemoteAllocatedMemory.h" />
     <ClInclude Include="Memory\RemoteMemoryProtection.h" />
     <ClInclude Include="Memory\RemotePointer.h" />
     <ClInclude Include="Memory\RemoteRegion.h" />
+    <ClInclude Include="Modules\ModulesManager.h" />
     <ClInclude Include="Modules\RemoteModule.h" />
     <ClInclude Include="Pch\StdAfx.h" />
     <ClInclude Include="RemoteProcess.h" />
     <ClInclude Include="Structures.h" />
     <ClInclude Include="Threads\RemoteThread.h" />
+    <ClInclude Include="Threads\ThreadsManager.h" />
     <ClInclude Include="Utils\MarshalCache.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Assembly\Yasm.cpp" />
     <ClCompile Include="Imports.cpp" />
+    <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\RemoteAllocatedMemory.cpp" />
     <ClCompile Include="Memory\RemoteMemoryProtection.cpp" />
     <ClCompile Include="Memory\RemotePointer.cpp" />
     <ClCompile Include="Memory\RemoteRegion.cpp" />
+    <ClCompile Include="Modules\ModulesManager.cpp" />
     <ClCompile Include="Modules\RemoteModule.cpp" />
     <ClCompile Include="Pch\StdAfx.cpp" />
     <ClCompile Include="RemoteProcess.cpp" />
     <ClCompile Include="Threads\RemoteThread.cpp" />
+    <ClCompile Include="Threads\ThreadsManager.cpp" />
     <ClCompile Include="Utils\MarshalCache.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

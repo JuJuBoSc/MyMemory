@@ -13,9 +13,12 @@
 #include <Imports.h>
 #include <Utils/MarshalCache.h>
 #include <Assembly/Yasm.h>
+#include <Memory/MemoryManager.h>
 #include <Memory/RemotePointer.h>
 #include <Memory/RemoteRegion.h>
 #include <Memory/RemoteMemoryProtection.h>
 #include <Memory/RemoteAllocatedMemory.h>
+#include <Modules/ModulesManager.h>
 #include <Modules/RemoteModule.h>
+#include <Threads/ThreadsManager.h>
 #include <Threads/RemoteThread.h>

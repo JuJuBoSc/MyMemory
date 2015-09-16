@@ -46,35 +46,35 @@ System::IntPtr MyMemory::Memory::RemoteAllocatedMemory::GetAllocatedChunk(String
 generic <typename T> bool MyMemory::Memory::RemoteAllocatedMemory::Write(String^ name, int offset, T value)
 {
 	IntPtr ptr = GetAllocatedChunk(name) + offset;
-	return Process->Write<T>(ptr, value);
+	return Process->MemoryManager->Write<T>(ptr, value);
 }
 
 bool MyMemory::Memory::RemoteAllocatedMemory::WriteBytes(String^ name, int offset, array<byte>^ bBuffer)
 {
 	IntPtr ptr = GetAllocatedChunk(name) + offset;
-	return Process->WriteBytes(ptr, bBuffer);
+	return Process->MemoryManager->WriteBytes(ptr, bBuffer);
 }
 
 bool MyMemory::Memory::RemoteAllocatedMemory::WriteString(String^ name, int offset, Encoding^ encoding, String^ value)
 {
 	IntPtr ptr = GetAllocatedChunk(name) + offset;
-	return Process->WriteString(ptr, encoding, value);
+	return Process->MemoryManager->WriteString(ptr, encoding, value);
 }
 
 generic <typename T> T MyMemory::Memory::RemoteAllocatedMemory::Read(String^ name, int offset)
 {
 	IntPtr ptr = GetAllocatedChunk(name) + offset;
-	return Process->Read<T>(ptr);
+	return Process->MemoryManager->Read<T>(ptr);
 }
 
 array<byte>^ MyMemory::Memory::RemoteAllocatedMemory::ReadBytes(String^ name, int offset, int size)
 {
 	IntPtr ptr = GetAllocatedChunk(name) + offset;
-	return Process->ReadBytes(ptr, size);
+	return Process->MemoryManager->ReadBytes(ptr, size);
 }
 
 String^ MyMemory::Memory::RemoteAllocatedMemory::ReadString(String^ name, int offset, Encoding^ encoding, int maxLength)
 {
 	IntPtr ptr = GetAllocatedChunk(name) + offset;
-	return Process->ReadString(ptr, encoding, maxLength);
+	return Process->MemoryManager->ReadString(ptr, encoding, maxLength);
 }

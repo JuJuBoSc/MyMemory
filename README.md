@@ -40,13 +40,13 @@ bool processOpened = process.Open(1234); // adjust process id
 ## 1.2 Reading memory
 
 ```csharp
-var result = process.Read<int>(new IntPtr(0xDEADBEEF));
+var result = process.MemoryManager.Read<int>(new IntPtr(0xDEADBEEF));
 ```
 
 ## 1.3 Writing memory
 
 ```csharp
-var writeSuccess = process.Write<int>(new IntPtr(0xDEADBEEF), 1234);
+var writeSuccess = process.MemoryManager.Write<int>(new IntPtr(0xDEADBEEF), 1234);
 ```
 
 ## 1.4 Protect memory
@@ -54,7 +54,7 @@ var writeSuccess = process.Write<int>(new IntPtr(0xDEADBEEF), 1234);
 Change the memory protection of a specific region, the RemoteMemoryProtection class implement IDisposable so it can be used in an using block :
 
 ```csharp
-using (var protection = process.ProtectMemory(new IntPtr(0x9A0000), 0x1000, Enumerations.MemoryProtectionFlags.ExecuteReadWrite))
+using (var protection = process.MemoryManager.ProtectMemory(new IntPtr(0x9A0000), 0x1000, Enumerations.MemoryProtectionFlags.ExecuteReadWrite))
 {
     // Protect the memory at address 0x9A0000 with a length 0x1000
     // ProtectMemory return an RemoteMemoryProtection instance
@@ -67,7 +67,7 @@ using (var protection = process.ProtectMemory(new IntPtr(0x9A0000), 0x1000, Enum
 Allocate memory in the process, the RemoteAllocatedMemory class implement IDisposable so it can be used in an using block :
 
 ```csharp
-using (var allocatedMemory = process.AllocateMemory(1000))
+using (var allocatedMemory = process.MemoryManager.AllocateMemory(1000))
 {
     Console.WriteLine("BaseAddress : 0x{0}", allocatedMemory.Pointer.ToInt64());
     // You can also get chunk from this allocated memory
@@ -85,7 +85,7 @@ using (var allocatedMemory = process.AllocateMemory(1000))
 ## 2.1 Enumerate modules
 
 ```csharp
-foreach (var remoteModule in process.Modules)
+foreach (var remoteModule in process.ModulesManager.Modules)
 {
     Console.WriteLine("Name : {0}", remoteModule.BaseName);
     Console.WriteLine("BaseAddress : 0x{0:X}", remoteModule.BaseAddress.ToInt64());
@@ -98,7 +98,7 @@ foreach (var remoteModule in process.Modules)
 ## 3.1 Enumerate  threads
 
 ```csharp
-foreach (var remoteThread in process.Threads)
+foreach (var remoteThread in process.ThreadsManager.Threads)
 {
     Console.WriteLine("ThreadId : {0}", remoteThread.ThreadId);
 }
@@ -107,15 +107,16 @@ foreach (var remoteThread in process.Threads)
 ## 3.2 Manipulate thread context
 
 ```csharp
-if (remoteThread.SuspendThread())
+var mainThread = process.ThreadsManager.MainThread;
+if (mainThread.SuspendThread())
 {
     MyMemory.Structures.ThreadContext ctx;
-    if (remoteThread.GetThreadContext(out ctx))
+    if (mainThread.GetThreadContext(out ctx))
     {
-        ctx.Rip = 0; // Don't do that for real, just proof of concept !
-        remoteThread.SetThreadContext(ref ctx);
+        ctx.Eip = 0; // Don't do that for real, just proof of concept !
+        mainThread.SetThreadContext(ref ctx);
     }
-    remoteThread.ResumeThread();
+    mainThread.ResumeThread();
 }
 ```
 

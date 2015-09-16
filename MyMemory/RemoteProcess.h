@@ -9,12 +9,15 @@ namespace MyMemory {
 		ref class Yasm;
 	}
 	namespace Modules {
+		ref class ModulesManager;
 		ref class RemoteModule;
 	}
 	namespace Threads {
+		ref class ThreadsManager;
 		ref class RemoteThread;
 	}
 	namespace Memory {
+		ref class MemoryManager;;
 		ref class RemoteMemoryProtection;
 		ref class RemoteAllocatedMemory;
 	}
@@ -30,7 +33,9 @@ namespace MyMemory {
 		void* m_processHandle;
 		bool m_is64BitsProcess;
 		MyMemory::Assembly::Yasm^ m_yasm;
-		MyMemory::Threads::RemoteThread^ m_mainThread;
+		MyMemory::Memory::MemoryManager^ m_memoryManager;
+		MyMemory::Modules::ModulesManager^ m_modulesManager;
+		MyMemory::Threads::ThreadsManager^ m_threadsManager;
 		
 		// Methods
 	public:
@@ -38,28 +43,20 @@ namespace MyMemory {
 		~RemoteProcess();
 		bool Open(unsigned int processId);
 		void Close();
-		generic <typename T> T Read(IntPtr lpAddress);
-		array<byte>^ ReadBytes(IntPtr lpAddress, int count);
-		String^ ReadString(IntPtr lpAddress, Encoding^ encoding, int maxLength);
-		String^ ReadString(IntPtr lpAddress, Encoding^ encoding) { return ReadString(lpAddress, encoding, 128); }
-		String^ ReadString(IntPtr lpAddress) { return ReadString(lpAddress, Encoding::UTF8); }
-		generic <typename T> bool Write(IntPtr lpAddress, T value);
-		bool WriteBytes(IntPtr lpAddress, array<byte>^ bBuffer);
-		bool WriteString(IntPtr lpAddress, Encoding^ encoding, String^ value);
-		bool WriteString(IntPtr lpAddress, String^ value) { return WriteString(lpAddress, Encoding::UTF8, value); }
-		MyMemory::Modules::RemoteModule^ GetModule(String^ name);
-		MyMemory::Memory::RemoteMemoryProtection^ ProtectMemory(IntPtr pointer, unsigned long size, Enumerations::MemoryProtectionFlags newProtection);
-		MyMemory::Memory::RemoteAllocatedMemory^ AllocateMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection);
-		MyMemory::Memory::RemoteAllocatedMemory^ AllocateMemory(unsigned long size) { return AllocateMemory(size, MyMemory::Enumerations::MemoryProtectionFlags::ExecuteReadWrite); }
-
-		// Methods
-	private:
-		MyMemory::Threads::RemoteThread^ GetMainThread();
 
 		// Properties
 	public:
 		property MyMemory::Assembly::Yasm^ Yasm {
 			MyMemory::Assembly::Yasm^ get() { return m_yasm; }
+		}
+		property MyMemory::Memory::MemoryManager^ MemoryManager {
+			MyMemory::Memory::MemoryManager^ get() { return m_memoryManager; }
+		}
+		property MyMemory::Modules::ModulesManager^ ModulesManager {
+			MyMemory::Modules::ModulesManager^ get() { return m_modulesManager; }
+		}
+		property MyMemory::Threads::ThreadsManager^ ThreadsManager {
+			MyMemory::Threads::ThreadsManager^ get() { return m_threadsManager; }
 		}
 		property unsigned int ProcessId {
 			unsigned int get() { return m_processId; }
@@ -69,18 +66,6 @@ namespace MyMemory {
 		}
 		property bool Is64BitsProcess {
 			bool get() { return m_is64BitsProcess; }
-		}
-		property List<MyMemory::Modules::RemoteModule^>^ Modules {
-			List<MyMemory::Modules::RemoteModule^>^ get();
-		}
-		property List<MyMemory::Threads::RemoteThread^>^ Threads {
-			List<MyMemory::Threads::RemoteThread^>^ get();
-		}
-		property MyMemory::Threads::RemoteThread^ MainThread {
-			MyMemory::Threads::RemoteThread^ get() { return m_mainThread; }
-		}
-		property MyMemory::Modules::RemoteModule^ default[String^]{
-			MyMemory::Modules::RemoteModule^ get(String^);
 		}
 
 	};
