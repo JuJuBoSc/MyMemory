@@ -14,6 +14,9 @@ namespace MyMemory {
 	namespace Threads {
 		ref class RemoteThread;
 	}
+	namespace Memory {
+		ref class RemoteMemoryProtection;
+	}
 }
 
 namespace MyMemory {
@@ -26,6 +29,7 @@ namespace MyMemory {
 		void* m_processHandle;
 		bool m_is64BitsProcess;
 		MyMemory::Assembly::Yasm^ m_yasm;
+		MyMemory::Threads::RemoteThread^ m_mainThread;
 		
 		// Methods
 	public:
@@ -43,7 +47,11 @@ namespace MyMemory {
 		bool WriteString(IntPtr lpAddress, Encoding^ encoding, String^ value);
 		bool WriteString(IntPtr lpAddress, String^ value) { return WriteString(lpAddress, Encoding::UTF8, value); }
 		MyMemory::Modules::RemoteModule^ GetModule(String^ name);
+		MyMemory::Memory::RemoteMemoryProtection^ ProtectMemory(IntPtr pointer, unsigned long size, Enumerations::MemoryProtectionFlags newProtection);
 
+		// Methods
+	private:
+		MyMemory::Threads::RemoteThread^ GetMainThread();
 
 		// Properties
 	public:
@@ -64,6 +72,9 @@ namespace MyMemory {
 		}
 		property List<MyMemory::Threads::RemoteThread^>^ Threads {
 			List<MyMemory::Threads::RemoteThread^>^ get();
+		}
+		property MyMemory::Threads::RemoteThread^ MainThread {
+			MyMemory::Threads::RemoteThread^ get() { return m_mainThread; }
 		}
 		property MyMemory::Modules::RemoteModule^ default[String^]{
 			MyMemory::Modules::RemoteModule^ get(String^);

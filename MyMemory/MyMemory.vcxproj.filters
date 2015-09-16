@@ -87,6 +87,12 @@
     <ClInclude Include="Structures.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
+    <ClInclude Include="Memory\RemoteMemoryProtection.h">
+      <Filter>Fichiers d%27en-tête\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Enumerations.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -117,6 +123,9 @@
       <Filter>Fichiers sources\Threads</Filter>
     </ClCompile>
     <ClCompile Include="Memory\RemoteRegion.cpp">
+      <Filter>Fichiers sources\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory\RemoteMemoryProtection.cpp">
       <Filter>Fichiers sources\Memory</Filter>
     </ClCompile>
   </ItemGroup>

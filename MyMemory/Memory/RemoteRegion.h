@@ -18,7 +18,7 @@ namespace MyMemory {
 
 			// Properties
 		public:
-			property unsigned long BaseAddress {
+			property unsigned long Size {
 				unsigned long get() { return m_size; }
 			}
 

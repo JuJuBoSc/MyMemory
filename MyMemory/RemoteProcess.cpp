@@ -42,6 +42,7 @@ bool MyMemory::RemoteProcess::Open(unsigned int processId)
 
 	m_processHandle = hProcess;
 	m_processId = processId;
+	m_mainThread = GetMainThread();
 
 	return true;
 
@@ -102,24 +103,47 @@ String^ MyMemory::RemoteProcess::ReadString(IntPtr lpAddress, Encoding^ encoding
 
 generic <typename T> bool MyMemory::RemoteProcess::Write(IntPtr lpAddress, T value)
 {
-	if (Utils::MarshalCache<T>::TypeRequireMarshal)
+	int size = Utils::MarshalCache<T>::Size;
+	unsigned long sizeU = Utils::MarshalCache<T>::SizeU;
+	unsigned long oldProtection;
+	void* ptr = lpAddress.ToPointer();
+	NtProtectVirtualMemory(m_processHandle, &ptr, &sizeU, PAGE_EXECUTE_READWRITE, &oldProtection);
+	try
 	{
-		int size = Utils::MarshalCache<T>::Size;
-		array<byte> ^ buffer = gcnew array<byte>(size);
-		pin_ptr<Byte> pBuffer = &buffer[0];
-		Marshal::StructureToPtr(value, IntPtr(pBuffer), false);
-		return NT_SUCCESS(NtWriteVirtualMemory(m_processHandle, (void*)lpAddress, pBuffer, size, NULL));
+		if (Utils::MarshalCache<T>::TypeRequireMarshal)
+		{
+			array<byte> ^ buffer = gcnew array<byte>(size);
+			pin_ptr<Byte> pBuffer = &buffer[0];
+			Marshal::StructureToPtr(value, IntPtr(pBuffer), false);
+			return NT_SUCCESS(NtWriteVirtualMemory(m_processHandle, (void*)lpAddress, pBuffer, size, NULL));
+		}
+		else
+		{
+			return NT_SUCCESS(NtWriteVirtualMemory(m_processHandle, (void*)lpAddress, &value, size, NULL));
+		}
 	}
-	else
+	finally
 	{
-		return NT_SUCCESS(NtWriteVirtualMemory(m_processHandle, (void*)lpAddress, &value, Utils::MarshalCache<T>::Size, NULL));
+		NtProtectVirtualMemory(m_processHandle, &ptr, &sizeU, oldProtection, &oldProtection);
 	}
 }
 
 bool MyMemory::RemoteProcess::WriteBytes(IntPtr lpAddress, array<byte>^ bBuffer)
 {
-	pin_ptr<Byte> pBuffer = &bBuffer[0];
-	return NT_SUCCESS(NtWriteVirtualMemory(m_processHandle, (void*)lpAddress, pBuffer, bBuffer->Length, NULL));
+	Memory::RemoteMemoryProtection^ protect = ProtectMemory(lpAddress, bBuffer->Length, MyMemory::Enumerations::MemoryProtectionFlags::ExecuteReadWrite);
+	unsigned long oldProtection;
+	void* ptr = lpAddress.ToPointer();
+	unsigned long size = bBuffer->Length;
+	NtProtectVirtualMemory(m_processHandle, &ptr, &size, PAGE_EXECUTE_READWRITE, &oldProtection);
+	try
+	{
+		pin_ptr<Byte> pBuffer = &bBuffer[0];
+		return NT_SUCCESS(NtWriteVirtualMemory(m_processHandle, (void*)lpAddress, pBuffer, bBuffer->Length, NULL));
+	}
+	finally
+	{
+		NtProtectVirtualMemory(m_processHandle, &ptr, &size, oldProtection, &oldProtection);
+	}
 }
 
 bool MyMemory::RemoteProcess::WriteString(IntPtr lpAddress, Encoding^ encoding, String^ value)
@@ -155,6 +179,41 @@ MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::GetModule(String^ name
 
 	return nullptr;
 
+}
+
+MyMemory::Memory::RemoteMemoryProtection^ MyMemory::RemoteProcess::ProtectMemory(IntPtr pointer, unsigned long size, Enumerations::MemoryProtectionFlags newProtection)
+{
+	return gcnew MyMemory::Memory::RemoteMemoryProtection(this, pointer, size, newProtection);
+}
+
+MyMemory::Threads::RemoteThread^ MyMemory::RemoteProcess::GetMainThread()
+{
+	MyMemory::Threads::RemoteThread^ mainTread = nullptr;
+	::FILETIME smallestFtCreate;
+
+	for each (MyMemory::Threads::RemoteThread^ thread in Threads)
+	{
+		::FILETIME ftCreate, ftExit, ftKernel, ftUser;
+		if (GetThreadTimes(thread->ThreadHandle.ToPointer(), &ftCreate, &ftExit, &ftKernel, &ftUser))
+		{
+
+			if (mainTread == nullptr)
+			{
+				mainTread = thread;
+				smallestFtCreate = ftCreate;
+				continue;
+			}
+
+			if (CompareFileTime(&ftCreate, &smallestFtCreate) == -1)
+			{
+				mainTread = thread;
+				smallestFtCreate = ftCreate;
+			}
+
+		}
+	}
+
+	return mainTread;
 }
 
 MyMemory::Modules::RemoteModule^ MyMemory::RemoteProcess::default::get(String^ s)

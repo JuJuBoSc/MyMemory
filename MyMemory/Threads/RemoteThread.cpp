@@ -41,24 +41,37 @@ bool MyMemory::Threads::RemoteThread::ResumeThread()
 bool MyMemory::Threads::RemoteThread::GetThreadContext([Out] MyMemory::Structures::ThreadContext% context)
 {
 	MyMemory::Structures::ThreadContext ctx;
-	ctx.ContextFlags = CONTEXT_FULL;
-	array<byte> ^ bufferCtx = gcnew array<byte>(Utils::MarshalCache<MyMemory::Structures::ThreadContext>::Size);
-	pin_ptr<Byte> pBufferCtx = &bufferCtx[0];
-	Marshal::StructureToPtr(ctx, IntPtr(pBufferCtx), false);
-	if (::GetThreadContext(m_threadHandle, (LPCONTEXT)pBufferCtx))
+	ctx.ContextFlags = CONTEXT_ALL;
+	void* pCtx = _aligned_malloc(Utils::MarshalCache<MyMemory::Structures::ThreadContext>::Size, 16);
+	try
 	{
-		context = (MyMemory::Structures::ThreadContext)Marshal::PtrToStructure(IntPtr(pBufferCtx), Utils::MarshalCache<MyMemory::Structures::ThreadContext>::RealType);
-		return true;
+		Marshal::StructureToPtr(ctx, IntPtr(pCtx), false);
+		NTSTATUS result = NtGetContextThread(m_threadHandle, (LPCONTEXT)pCtx);
+		if (NT_SUCCESS(result))
+		{
+			context = (MyMemory::Structures::ThreadContext)Marshal::PtrToStructure(IntPtr(pCtx), Utils::MarshalCache<MyMemory::Structures::ThreadContext>::RealType);
+			return true;
+		}
+	}
+	finally
+	{
+		_aligned_free(pCtx);
 	}
 	return false;
 }
 
 bool MyMemory::Threads::RemoteThread::SetThreadContext(MyMemory::Structures::ThreadContext% context)
 {
-	array<byte> ^ bufferCtx = gcnew array<byte>(Utils::MarshalCache<MyMemory::Structures::ThreadContext>::Size);
-	pin_ptr<Byte> pBufferCtx = &bufferCtx[0];
-	Marshal::StructureToPtr(context, IntPtr(pBufferCtx), false);
-	return ::SetThreadContext(m_threadHandle, (LPCONTEXT)pBufferCtx) != 0;
+	void* pCtx = _aligned_malloc(Utils::MarshalCache<MyMemory::Structures::ThreadContext>::Size, 16);
+	try
+	{
+		Marshal::StructureToPtr(context, IntPtr(pCtx), false);
+		return NT_SUCCESS(NtSetContextThread(m_threadHandle, (LPCONTEXT)pCtx));
+	}
+	finally
+	{
+		_aligned_free(pCtx);
+	}
 }
 
 unsigned long MyMemory::Threads::RemoteThread::ExitCodeThread::get()

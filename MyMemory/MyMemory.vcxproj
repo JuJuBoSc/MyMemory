@@ -160,7 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Assembly\Yasm.h" />
+    <ClInclude Include="Enumerations.h" />
     <ClInclude Include="Imports.h" />
+    <ClInclude Include="Memory\RemoteMemoryProtection.h" />
     <ClInclude Include="Memory\RemotePointer.h" />
     <ClInclude Include="Memory\RemoteRegion.h" />
     <ClInclude Include="Modules\RemoteModule.h" />
@@ -174,6 +176,7 @@
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Assembly\Yasm.cpp" />
     <ClCompile Include="Imports.cpp" />
+    <ClCompile Include="Memory\RemoteMemoryProtection.cpp" />
     <ClCompile Include="Memory\RemotePointer.cpp" />
     <ClCompile Include="Memory\RemoteRegion.cpp" />
     <ClCompile Include="Modules\RemoteModule.cpp" />

@@ -14,6 +14,7 @@
   - 1.1 - Initialize a RemoteProcess
   - 1.2 - Reading memory
   - 1.3 - Writing memory
+  - 1.4 - Protect memory
  - 2 - **Modules informations**
   - 2.1 - Enumerate modules 
  - 3 - **Threads informations**
@@ -45,6 +46,19 @@ var result = process.Read<int>(new IntPtr(0xDEADBEEF));
 
 ```csharp
 var writeSuccess = process.Write<int>(new IntPtr(0xDEADBEEF), 1234);
+```
+
+## 1.4 Protect memory
+
+Change the memory protection of a specific region, the RemoteMemoryProtection class implement IDisposable so it can be used in an using block :
+
+```csharp
+using (var protection = process.ProtectMemory(new IntPtr(0x9A0000), 0x1000, Enumerations.MemoryProtectionFlags.ExecuteReadWrite))
+{
+    // Protect the memory at address 0x9A0000 with a length 0x1000
+    // ProtectMemory return an RemoteMemoryProtection instance
+    // The memory protection is restored when .Dispose() is called
+}
 ```
 
 # 2 - Modules informations
