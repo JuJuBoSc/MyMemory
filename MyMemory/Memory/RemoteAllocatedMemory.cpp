@@ -12,9 +12,7 @@ MyMemory::Memory::RemoteAllocatedMemory::~RemoteAllocatedMemory()
 {
 	if (Pointer.ToPointer())
 	{
-		PVOID ptr = this->Pointer.ToPointer();
-		ULONG regionSize = this->Size;
-		NtFreeVirtualMemory(this->Process->ProcessHandle.ToPointer(), &ptr, &regionSize, MEM_RELEASE);
+		VirtualFreeEx(Process->ProcessHandle.ToPointer(), Pointer.ToPointer(), 0, MEM_RELEASE);
 		this->Pointer = IntPtr(nullptr);
 	}
 }

@@ -12,13 +12,13 @@ generic <typename T> T MyMemory::Memory::MemoryManager::Read(IntPtr lpAddress)
 		int size = Utils::MarshalCache<T>::Size;
 		array<byte>^ buffer = gcnew array<byte>(size);
 		pin_ptr<Byte> pBuffer = &buffer[0];
-		NtReadVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, size, NULL);
+		ReadProcessMemory(Process->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, size, nullptr);
 		return (T)Marshal::PtrToStructure(IntPtr(pBuffer), Utils::MarshalCache<T>::RealType);
 	}
 	else
 	{
 		T result = T();
-		NtReadVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), (void*)lpAddress, &result, Utils::MarshalCache<T>::Size, NULL);
+		ReadProcessMemory(Process->ProcessHandle.ToPointer(), (void*)lpAddress, &result, Utils::MarshalCache<T>::Size, nullptr);
 		return result;
 	}
 }
@@ -27,7 +27,7 @@ array<byte>^ MyMemory::Memory::MemoryManager::ReadBytes(IntPtr lpAddress, int co
 {
 	array<byte>^ buffer = gcnew array<byte>(count);
 	pin_ptr<Byte> pBuffer = &buffer[0];
-	NtReadVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, count, NULL);
+	ReadProcessMemory(Process->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, count, nullptr);
 	return buffer;
 }
 
@@ -48,10 +48,8 @@ String^ MyMemory::Memory::MemoryManager::ReadString(IntPtr lpAddress, Encoding^ 
 generic <typename T> bool MyMemory::Memory::MemoryManager::Write(IntPtr lpAddress, T value)
 {
 	int size = Utils::MarshalCache<T>::Size;
-	unsigned long sizeU = Utils::MarshalCache<T>::SizeU;
 	unsigned long oldProtection;
-	void* ptr = lpAddress.ToPointer();
-	NtProtectVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), &ptr, &sizeU, PAGE_EXECUTE_READWRITE, &oldProtection);
+	VirtualProtectEx(Process->ProcessHandle.ToPointer(), lpAddress.ToPointer(), size, PAGE_EXECUTE_READWRITE, &oldProtection);
 	try
 	{
 		if (Utils::MarshalCache<T>::TypeRequireMarshal)
@@ -59,16 +57,16 @@ generic <typename T> bool MyMemory::Memory::MemoryManager::Write(IntPtr lpAddres
 			array<byte> ^ buffer = gcnew array<byte>(size);
 			pin_ptr<Byte> pBuffer = &buffer[0];
 			Marshal::StructureToPtr(value, IntPtr(pBuffer), false);
-			return NT_SUCCESS(NtWriteVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, size, NULL));
+			return WriteProcessMemory(Process->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, size, nullptr) == TRUE;
 		}
 		else
 		{
-			return NT_SUCCESS(NtWriteVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), (void*)lpAddress, &value, size, NULL));
+			return WriteProcessMemory(Process->ProcessHandle.ToPointer(), (void*)lpAddress, &value, size, nullptr) == TRUE;
 		}
 	}
 	finally
 	{
-		NtProtectVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), &ptr, &sizeU, oldProtection, &oldProtection);
+		VirtualProtectEx(Process->ProcessHandle.ToPointer(), lpAddress.ToPointer(), size, oldProtection, &oldProtection);
 	}
 }
 
@@ -76,17 +74,15 @@ bool MyMemory::Memory::MemoryManager::WriteBytes(IntPtr lpAddress, array<byte>^ 
 {
 	Memory::RemoteMemoryProtection^ protect = ProtectMemory(lpAddress, bBuffer->Length, MyMemory::Enumerations::MemoryProtectionFlags::ExecuteReadWrite);
 	unsigned long oldProtection;
-	void* ptr = lpAddress.ToPointer();
-	unsigned long size = bBuffer->Length;
-	NtProtectVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), &ptr, &size, PAGE_EXECUTE_READWRITE, &oldProtection);
+	VirtualProtectEx(Process->ProcessHandle.ToPointer(), lpAddress.ToPointer(), bBuffer->Length, PAGE_EXECUTE_READWRITE, &oldProtection);
 	try
 	{
 		pin_ptr<Byte> pBuffer = &bBuffer[0];
-		return NT_SUCCESS(NtWriteVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, bBuffer->Length, NULL));
+		return WriteProcessMemory(Process->ProcessHandle.ToPointer(), (void*)lpAddress, pBuffer, bBuffer->Length, nullptr) == TRUE;
 	}
 	finally
 	{
-		NtProtectVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), &ptr, &size, oldProtection, &oldProtection);
+		VirtualProtectEx(Process->ProcessHandle.ToPointer(), lpAddress.ToPointer(), bBuffer->Length, oldProtection, &oldProtection);
 	}
 }
 
@@ -95,8 +91,8 @@ bool MyMemory::Memory::MemoryManager::WriteString(IntPtr lpAddress, Encoding^ en
 	if (value->Length == 0)
 		value = "\0";
 
-	if (value[value->Length - 1] != '\0')
-		value += '\0';
+	if (!value->EndsWith("\0"))
+		value += "\0";
 
 	return WriteBytes(lpAddress, encoding->GetBytes(value));
 }
@@ -108,7 +104,6 @@ MyMemory::Memory::RemoteMemoryProtection^ MyMemory::Memory::MemoryManager::Prote
 
 MyMemory::Memory::RemoteAllocatedMemory^ MyMemory::Memory::MemoryManager::AllocateMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection)
 {
-	void* ptr = nullptr;
-	NtAllocateVirtualMemory(this->m_remoteProcess->ProcessHandle.ToPointer(), &ptr, 0, &size, MEM_COMMIT | MEM_RESERVE, (ULONG)protection);
+	void* ptr = VirtualAllocEx(Process->ProcessHandle.ToPointer(), nullptr, size, MEM_RESERVE | MEM_COMMIT, (DWORD)protection);
 	return gcnew MyMemory::Memory::RemoteAllocatedMemory(this->m_remoteProcess, IntPtr(ptr), size, protection);
 }

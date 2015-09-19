@@ -37,12 +37,6 @@
     <Filter Include="Fichiers sources\Assembly">
       <UniqueIdentifier>{11227e0c-73c7-4c20-8ae7-655780aaba4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Fichiers d%27en-tête\Hooking">
-      <UniqueIdentifier>{6de8cb14-4a13-46ed-8c82-e3243878b376}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Fichiers sources\Hooking">
-      <UniqueIdentifier>{b57ab3d4-2b90-4475-819d-c021f70196e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Fichiers d%27en-tête\Modules">
       <UniqueIdentifier>{cc5ff2aa-b72f-4a77-938a-e603120b7f67}</UniqueIdentifier>
     </Filter>
@@ -55,6 +49,12 @@
     <Filter Include="Fichiers sources\Threads">
       <UniqueIdentifier>{9b807742-9b90-47ca-a946-4707380a50e5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers sources\Hooks">
+      <UniqueIdentifier>{b57ab3d4-2b90-4475-819d-c021f70196e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête\Hooks">
+      <UniqueIdentifier>{6de8cb14-4a13-46ed-8c82-e3243878b376}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RemoteProcess.h">
@@ -62,9 +62,6 @@
     </ClInclude>
     <ClInclude Include="Pch\StdAfx.h">
       <Filter>Fichiers d%27en-tête\Pch</Filter>
-    </ClInclude>
-    <ClInclude Include="Imports.h">
-      <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Utils\MarshalCache.h">
       <Filter>Fichiers d%27en-tête\Utils</Filter>
@@ -105,6 +102,30 @@
     <ClInclude Include="Threads\ThreadsManager.h">
       <Filter>Fichiers d%27en-tête\Threads</Filter>
     </ClInclude>
+    <ClInclude Include="Hooks\HooksManager.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\HookBase.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\HookJmp.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Assembly.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\CallbackBase.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\CallbackExecutor.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\Randoms.h">
+      <Filter>Fichiers d%27en-tête\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\CallbackNotifier.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -115,9 +136,6 @@
     </ClCompile>
     <ClCompile Include="Pch\StdAfx.cpp">
       <Filter>Fichiers sources\Pch</Filter>
-    </ClCompile>
-    <ClCompile Include="Imports.cpp">
-      <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Utils\MarshalCache.cpp">
       <Filter>Fichiers sources\Utils</Filter>
@@ -151,6 +169,30 @@
     </ClCompile>
     <ClCompile Include="Threads\ThreadsManager.cpp">
       <Filter>Fichiers sources\Threads</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\HooksManager.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\HookBase.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\HookJmp.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Assembly.cpp">
+      <Filter>Fichiers sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\CallbackBase.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\CallbackExecutor.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\Randoms.cpp">
+      <Filter>Fichiers sources\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\CallbackNotifier.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

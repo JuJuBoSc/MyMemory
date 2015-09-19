@@ -11,6 +11,27 @@ namespace MyMemory {
 #if _WIN64 || __amd64__
 	public:
 		[StructLayout(LayoutKind::Sequential)]
+		value struct BaseRegisters
+		{
+		public:
+			IntPtr R15;
+			IntPtr R14;
+			IntPtr R13;
+			IntPtr R12;
+			IntPtr R11;
+			IntPtr R10;
+			IntPtr R8;
+			IntPtr R9;
+			IntPtr Rdi;
+			IntPtr Rsi;
+			IntPtr Rdx;
+			IntPtr Rcx;
+			IntPtr Rbx;
+			IntPtr Rax;
+			IntPtr Rbp;
+			IntPtr Rsp;
+		};
+		[StructLayout(LayoutKind::Sequential)]
 		value struct ThreadContext
 		{
 		public:
@@ -65,6 +86,19 @@ namespace MyMemory {
 		};
 #else
 	public:
+		[StructLayout(LayoutKind::Sequential)]
+		value struct BaseRegisters
+		{
+		public:
+			IntPtr Eax;
+			IntPtr Ebx;
+			IntPtr Ecx;
+			IntPtr Edx;
+			IntPtr Edi;
+			IntPtr Esi;
+			IntPtr Ebp;
+			IntPtr Esp;
+		};
 		[StructLayout(LayoutKind::Sequential)]
 		value struct ThreadContext
 		{

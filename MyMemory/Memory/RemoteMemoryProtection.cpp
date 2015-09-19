@@ -3,16 +3,14 @@
 MyMemory::Memory::RemoteMemoryProtection::RemoteMemoryProtection(RemoteProcess^ process, IntPtr pointer, unsigned long size, MyMemory::Enumerations::MemoryProtectionFlags newProtection)
 	: MyMemory::Memory::RemoteRegion(process, pointer, size)
 {
-	ULONG old;
+	DWORD old;
 	PVOID ptr = pointer.ToPointer();
-	NtProtectVirtualMemory(process->ProcessHandle.ToPointer(), &ptr, &size, (ULONG)newProtection, &old);
+	VirtualProtectEx(Process->ProcessHandle.ToPointer(), pointer.ToPointer(), size, (DWORD)newProtection, &old);
 	m_oldProtection = (MyMemory::Enumerations::MemoryProtectionFlags)old;
 }
 
 MyMemory::Memory::RemoteMemoryProtection::~RemoteMemoryProtection()
 {
 	ULONG old;
-	ULONG size = this->Size;
-	PVOID ptr = Pointer.ToPointer();
-	NtProtectVirtualMemory(this->Process->ProcessHandle.ToPointer(), &ptr, &size, (ULONG)m_oldProtection, &old);
+	VirtualProtectEx(Process->ProcessHandle.ToPointer(), Pointer.ToPointer(), Size, (DWORD)OldProtection, &old);
 }

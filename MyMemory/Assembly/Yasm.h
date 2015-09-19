@@ -1,5 +1,7 @@
 #pragma once
 
+extern "C" int __cdecl _yasm_Assemble(const char *, void *, int);
+
 using namespace System;
 using namespace System::Threading;
 

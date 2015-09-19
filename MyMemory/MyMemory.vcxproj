@@ -161,7 +161,12 @@
   <ItemGroup>
     <ClInclude Include="Assembly\Yasm.h" />
     <ClInclude Include="Enumerations.h" />
-    <ClInclude Include="Imports.h" />
+    <ClInclude Include="Hooks\CallbackBase.h" />
+    <ClInclude Include="Hooks\CallbackExecutor.h" />
+    <ClInclude Include="Hooks\CallbackNotifier.h" />
+    <ClInclude Include="Hooks\HookBase.h" />
+    <ClInclude Include="Hooks\HookJmp.h" />
+    <ClInclude Include="Hooks\HooksManager.h" />
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\RemoteAllocatedMemory.h" />
     <ClInclude Include="Memory\RemoteMemoryProtection.h" />
@@ -174,12 +179,19 @@
     <ClInclude Include="Structures.h" />
     <ClInclude Include="Threads\RemoteThread.h" />
     <ClInclude Include="Threads\ThreadsManager.h" />
+    <ClInclude Include="Utils\Assembly.h" />
     <ClInclude Include="Utils\MarshalCache.h" />
+    <ClInclude Include="Utils\Randoms.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Assembly\Yasm.cpp" />
-    <ClCompile Include="Imports.cpp" />
+    <ClCompile Include="Hooks\CallbackBase.cpp" />
+    <ClCompile Include="Hooks\CallbackExecutor.cpp" />
+    <ClCompile Include="Hooks\CallbackNotifier.cpp" />
+    <ClCompile Include="Hooks\HookBase.cpp" />
+    <ClCompile Include="Hooks\HookJmp.cpp" />
+    <ClCompile Include="Hooks\HooksManager.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\RemoteAllocatedMemory.cpp" />
     <ClCompile Include="Memory\RemoteMemoryProtection.cpp" />
@@ -191,7 +203,9 @@
     <ClCompile Include="RemoteProcess.cpp" />
     <ClCompile Include="Threads\RemoteThread.cpp" />
     <ClCompile Include="Threads\ThreadsManager.cpp" />
+    <ClCompile Include="Utils\Assembly.cpp" />
     <ClCompile Include="Utils\MarshalCache.cpp" />
+    <ClCompile Include="Utils\Randoms.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

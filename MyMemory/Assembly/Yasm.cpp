@@ -32,13 +32,25 @@ array<byte>^ MyMemory::Assembly::Yasm::Assemble(array<String^>^ mnemonics, IntPt
 	{
 
 		StringBuilder sb;
-		sb.AppendLine("[BITS " + m_bits + "]");
+		sb.AppendLine(String::Format("[ORG 0x{0:X}]", org.ToInt64()));
+		sb.AppendLine(String::Format("[BITS {0}]", m_bits));
 
-		if (org.ToPointer() != nullptr) sb.AppendLine("[ORG 0x" + org.ToInt64().ToString("X") + "]");
 		for each (String^ s in mnemonics) sb.AppendLine(s);
+
+		//System::Diagnostics::StackTrace^ st = gcnew System::Diagnostics::StackTrace();
+		//for (int i = 1; i < 5; i++)
+		//{
+		//	System::Diagnostics::StackFrame^ frame = st->GetFrame(i);
+		//	String^ tamer = frame->GetMethod()->Name;
+		//	Console::WriteLine(tamer);
+		//}
+		//Console::WriteLine(sb.ToString());
 
 		IntPtr pBuffer = Marshal::StringToHGlobalAnsi(sb.ToString());
 		int len = _yasm_Assemble((const char*)pBuffer.ToPointer(), m_pBuffer.ToPointer(), m_bufferSize);
+
+		if (len == 0)
+			throw gcnew Exception("Yasm error : The result buffer was empty !");
 
 		if (len == -1)
 			throw gcnew Exception("Yasm error : Invalid mnemonics !");
@@ -81,15 +93,17 @@ System::IntPtr MyMemory::Assembly::Yasm::InjectAndExecute(array<String^>^ mnemon
 #if _WIN64 || __amd64__
 		array<String^>^ asmCallGate = gcnew array<String^>
 		{	
-				"call " + lpAddress,
-				"mov [" + pResult + "], rax",
-				"retn"
+				"mov rax, 0x" + lpAddress.ToString("X"),
+					"call rax",
+					"mov rcx, 0x" + pResult.ToString("X"),
+					"mov [rcx], rax",
+					"retn",
 		};
 #else
 		array<String^>^ asmCallGate = gcnew array<String^>
 		{
-				"call " + lpAddress,
-				"mov [" + pResult + "], eax",
+				"call 0x" + lpAddress.ToString("X"),
+				"mov [0x" + pResult.ToString("X") + "], eax",
 				"retn"
 		};
 

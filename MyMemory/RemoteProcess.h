@@ -21,6 +21,9 @@ namespace MyMemory {
 		ref class RemoteMemoryProtection;
 		ref class RemoteAllocatedMemory;
 	}
+	namespace Hooks {
+		ref class HooksManager;
+	}
 }
 
 namespace MyMemory {
@@ -35,13 +38,12 @@ namespace MyMemory {
 		MyMemory::Memory::MemoryManager^ m_memoryManager;
 		MyMemory::Modules::ModulesManager^ m_modulesManager;
 		MyMemory::Threads::ThreadsManager^ m_threadsManager;
+		MyMemory::Hooks::HooksManager^ m_hooksManager;
 		
 		// Methods
 	public:
-		RemoteProcess();
+		RemoteProcess(unsigned int processId);
 		~RemoteProcess();
-		bool Open(unsigned int processId);
-		void Close();
 
 		// Properties
 	public:
@@ -56,6 +58,9 @@ namespace MyMemory {
 		}
 		property MyMemory::Threads::ThreadsManager^ ThreadsManager {
 			MyMemory::Threads::ThreadsManager^ get() { return m_threadsManager; }
+		}
+		property MyMemory::Hooks::HooksManager^ HooksManager {
+			MyMemory::Hooks::HooksManager^ get() { return m_hooksManager; }
 		}
 		property unsigned int ProcessId {
 			unsigned int get() { return m_processId; }

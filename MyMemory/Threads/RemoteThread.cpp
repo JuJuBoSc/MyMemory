@@ -2,21 +2,9 @@
 
 MyMemory::Threads::RemoteThread::RemoteThread(RemoteProcess^ process, unsigned long threadId)
 {
-
 	m_remoteProcess = process;
 	m_threadId = threadId;
-
-	CLIENT_ID clientId;
-	clientId.UniqueProcess = NULL;
-	clientId.UniqueThread = (PVOID)threadId;
-
-	OBJECT_ATTRIBUTES oa;
-	InitializeObjectAttributes(&oa, NULL, 0, NULL, NULL);
-
-	HANDLE hThread;
-	if (NT_SUCCESS(NtOpenThread(&hThread, THREAD_ALL_ACCESS, &oa, &clientId)))
-		m_threadHandle = hThread;
-
+	m_threadHandle = OpenThread(THREAD_ALL_ACCESS, false, threadId);
 }
 
 MyMemory::Threads::RemoteThread::RemoteThread(RemoteProcess^ process, IntPtr threadHandle)
@@ -30,19 +18,19 @@ MyMemory::Threads::RemoteThread::~RemoteThread()
 {
 	if (m_threadHandle)
 	{
-		NtClose(m_threadHandle);
+		CloseHandle(m_threadHandle);
 		m_threadHandle = nullptr;
 	}
 }
 
 bool MyMemory::Threads::RemoteThread::SuspendThread()
 {
-	return NT_SUCCESS(NtSuspendThread(m_threadHandle, nullptr));
+	return ::SuspendThread(m_threadHandle) >= 0;
 }
 
 bool MyMemory::Threads::RemoteThread::ResumeThread()
 {
-	return NT_SUCCESS(NtResumeThread(m_threadHandle, nullptr));
+	return ::ResumeThread(m_threadHandle) >= 0;
 }
 
 bool MyMemory::Threads::RemoteThread::GetThreadContext([Out] MyMemory::Structures::ThreadContext% context)
@@ -53,8 +41,7 @@ bool MyMemory::Threads::RemoteThread::GetThreadContext([Out] MyMemory::Structure
 	try
 	{
 		Marshal::StructureToPtr(ctx, IntPtr(pCtx), false);
-		NTSTATUS result = NtGetContextThread(m_threadHandle, (LPCONTEXT)pCtx);
-		if (NT_SUCCESS(result))
+		if (::GetThreadContext(m_threadHandle, (LPCONTEXT)pCtx))
 		{
 			context = (MyMemory::Structures::ThreadContext)Marshal::PtrToStructure(IntPtr(pCtx), Utils::MarshalCache<MyMemory::Structures::ThreadContext>::RealType);
 			return true;
@@ -73,7 +60,7 @@ bool MyMemory::Threads::RemoteThread::SetThreadContext(MyMemory::Structures::Thr
 	try
 	{
 		Marshal::StructureToPtr(context, IntPtr(pCtx), false);
-		return NT_SUCCESS(NtSetContextThread(m_threadHandle, (LPCONTEXT)pCtx));
+		return ::SetThreadContext(m_threadHandle, (LPCONTEXT)pCtx) == TRUE;
 	}
 	finally
 	{
@@ -88,7 +75,7 @@ bool MyMemory::Threads::RemoteThread::TerminateThread(unsigned long exitCode)
 
 void MyMemory::Threads::RemoteThread::Join()
 {
-	NtWaitForSingleObject(m_threadHandle, FALSE, NULL);
+	WaitForSingleObject(m_threadHandle, INFINITE);
 }
 
 unsigned long MyMemory::Threads::RemoteThread::ExitCodeThread::get()

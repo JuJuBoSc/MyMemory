@@ -2,34 +2,18 @@
 
 using namespace System::Runtime::InteropServices;
 
-MyMemory::RemoteProcess::RemoteProcess()
+MyMemory::RemoteProcess::RemoteProcess(unsigned int processId)
 {
 #if _WIN64 || __amd64__
 	m_yasm = gcnew MyMemory::Assembly::Yasm(this, 20480, 64);
 #else
 	m_yasm = gcnew MyMemory::Assembly::Yasm(this, 20480, 32);
 #endif
-}
 
-MyMemory::RemoteProcess::~RemoteProcess()
-{
-	Close();
-}
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, false, processId);
 
-
-bool MyMemory::RemoteProcess::Open(unsigned int processId)
-{
-
-	CLIENT_ID clientId;
-	clientId.UniqueProcess = (PVOID)processId;
-	clientId.UniqueThread = NULL;
-
-	OBJECT_ATTRIBUTES oa;
-	InitializeObjectAttributes(&oa, NULL, 0, NULL, NULL);
-
-	HANDLE hProcess;
-	if (!NT_SUCCESS(NtOpenProcess(&hProcess, PROCESS_ALL_ACCESS, &oa, &clientId)))
-		return false;
+	if (!hProcess)
+		throw gcnew Exception("Unable to open process !");
 
 	bool remoteIs64Bits = false;
 
@@ -48,21 +32,19 @@ bool MyMemory::RemoteProcess::Open(unsigned int processId)
 	m_memoryManager = gcnew MyMemory::Memory::MemoryManager(this);
 	m_modulesManager = gcnew MyMemory::Modules::ModulesManager(this);
 	m_threadsManager = gcnew MyMemory::Threads::ThreadsManager(this);
-
-	return true;
+	m_hooksManager = gcnew MyMemory::Hooks::HooksManager(this);
 
 }
 
-void MyMemory::RemoteProcess::Close()
+MyMemory::RemoteProcess::~RemoteProcess()
 {
 
-	if (m_processHandle)
-	{
-		NtClose(m_processHandle);
-		m_processHandle = nullptr;
-	}
+	delete m_hooksManager;
+	delete m_modulesManager;
+	delete m_threadsManager;
+	delete m_memoryManager;
 
-	m_processId = 0;
+	if (m_processHandle)
+		CloseHandle(m_processHandle);
 
 }
-
