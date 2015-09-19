@@ -27,6 +27,9 @@ namespace MyMemory {
 			MyMemory::Memory::RemoteMemoryProtection^ ProtectMemory(IntPtr pointer, unsigned long size, Enumerations::MemoryProtectionFlags newProtection);
 			MyMemory::Memory::RemoteAllocatedMemory^ AllocateMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection);
 			MyMemory::Memory::RemoteAllocatedMemory^ AllocateMemory(unsigned long size) { return AllocateMemory(size, MyMemory::Enumerations::MemoryProtectionFlags::ExecuteReadWrite); }
+			IntPtr AllocateRawMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection);
+			IntPtr AllocateRawMemory(unsigned long size) { return AllocateRawMemory(size, MyMemory::Enumerations::MemoryProtectionFlags::ExecuteReadWrite); }
+			bool FreeRawMemory(IntPtr lpAddress);
 
 
 			// Properties

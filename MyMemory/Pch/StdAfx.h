@@ -25,7 +25,9 @@
 #include <Threads/RemoteThread.h>
 #include <Hooks/HooksManager.h>
 #include <Hooks/HookBase.h>
+#include <Hooks/HookJmp.h>
+#include <Hooks/HookVmtOverwrite.h>
+#include <Hooks/HookVmtCopy.h>
 #include <Hooks/CallbackBase.h>
 #include <Hooks/CallbackExecutor.h>
 #include <Hooks/CallbackNotifier.h>
-#include <Hooks/HookJmp.h>

@@ -167,6 +167,8 @@
     <ClInclude Include="Hooks\HookBase.h" />
     <ClInclude Include="Hooks\HookJmp.h" />
     <ClInclude Include="Hooks\HooksManager.h" />
+    <ClInclude Include="Hooks\HookVmtCopy.h" />
+    <ClInclude Include="Hooks\HookVmtOverwrite.h" />
     <ClInclude Include="Memory\MemoryManager.h" />
     <ClInclude Include="Memory\RemoteAllocatedMemory.h" />
     <ClInclude Include="Memory\RemoteMemoryProtection.h" />
@@ -192,6 +194,8 @@
     <ClCompile Include="Hooks\HookBase.cpp" />
     <ClCompile Include="Hooks\HookJmp.cpp" />
     <ClCompile Include="Hooks\HooksManager.cpp" />
+    <ClCompile Include="Hooks\HookVmtCopy.cpp" />
+    <ClCompile Include="Hooks\HookVmtOverwrite.cpp" />
     <ClCompile Include="Memory\MemoryManager.cpp" />
     <ClCompile Include="Memory\RemoteAllocatedMemory.cpp" />
     <ClCompile Include="Memory\RemoteMemoryProtection.cpp" />

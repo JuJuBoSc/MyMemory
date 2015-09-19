@@ -107,3 +107,13 @@ MyMemory::Memory::RemoteAllocatedMemory^ MyMemory::Memory::MemoryManager::Alloca
 	void* ptr = VirtualAllocEx(Process->ProcessHandle.ToPointer(), nullptr, size, MEM_RESERVE | MEM_COMMIT, (DWORD)protection);
 	return gcnew MyMemory::Memory::RemoteAllocatedMemory(this->m_remoteProcess, IntPtr(ptr), size, protection);
 }
+
+System::IntPtr MyMemory::Memory::MemoryManager::AllocateRawMemory(unsigned long size, Enumerations::MemoryProtectionFlags protection)
+{
+	return IntPtr(VirtualAllocEx(Process->ProcessHandle.ToPointer(), nullptr, size, MEM_RESERVE | MEM_COMMIT, (DWORD)protection));
+}
+
+bool MyMemory::Memory::MemoryManager::FreeRawMemory(IntPtr lpAddress)
+{
+	return VirtualFreeEx(Process->ProcessHandle.ToPointer(), lpAddress.ToPointer(), 0, MEM_RELEASE) == TRUE;
+}

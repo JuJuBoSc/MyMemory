@@ -126,6 +126,12 @@
     <ClInclude Include="Hooks\CallbackNotifier.h">
       <Filter>Fichiers d%27en-tête\Hooks</Filter>
     </ClInclude>
+    <ClInclude Include="Hooks\HookVmtOverwrite.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
+    <ClInclude Include="Hooks\HookVmtCopy.h">
+      <Filter>Fichiers d%27en-tête\Hooks</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -192,6 +198,12 @@
       <Filter>Fichiers sources\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Hooks\CallbackNotifier.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\HookVmtOverwrite.cpp">
+      <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Hooks\HookVmtCopy.cpp">
       <Filter>Fichiers sources\Hooks</Filter>
     </ClCompile>
   </ItemGroup>
