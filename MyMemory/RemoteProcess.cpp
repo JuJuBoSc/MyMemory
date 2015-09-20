@@ -33,12 +33,14 @@ MyMemory::RemoteProcess::RemoteProcess(unsigned int processId)
 	m_modulesManager = gcnew MyMemory::Modules::ModulesManager(this);
 	m_threadsManager = gcnew MyMemory::Threads::ThreadsManager(this);
 	m_hooksManager = gcnew MyMemory::Hooks::HooksManager(this);
+	m_patternsManager = gcnew MyMemory::Patterns::PatternsManager(this);
 
 }
 
 MyMemory::RemoteProcess::~RemoteProcess()
 {
 
+	delete m_patternsManager;
 	delete m_hooksManager;
 	delete m_modulesManager;
 	delete m_threadsManager;

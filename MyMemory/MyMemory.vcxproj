@@ -176,6 +176,7 @@
     <ClInclude Include="Memory\RemoteRegion.h" />
     <ClInclude Include="Modules\ModulesManager.h" />
     <ClInclude Include="Modules\RemoteModule.h" />
+    <ClInclude Include="Patterns\PatternsManager.h" />
     <ClInclude Include="Pch\StdAfx.h" />
     <ClInclude Include="RemoteProcess.h" />
     <ClInclude Include="Structures.h" />
@@ -203,6 +204,7 @@
     <ClCompile Include="Memory\RemoteRegion.cpp" />
     <ClCompile Include="Modules\ModulesManager.cpp" />
     <ClCompile Include="Modules\RemoteModule.cpp" />
+    <ClCompile Include="Patterns\PatternsManager.cpp" />
     <ClCompile Include="Pch\StdAfx.cpp" />
     <ClCompile Include="RemoteProcess.cpp" />
     <ClCompile Include="Threads\RemoteThread.cpp" />

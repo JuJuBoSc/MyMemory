@@ -24,6 +24,9 @@ namespace MyMemory {
 	namespace Hooks {
 		ref class HooksManager;
 	}
+	namespace Patterns {
+		ref class PatternsManager;
+	}
 }
 
 namespace MyMemory {
@@ -39,6 +42,7 @@ namespace MyMemory {
 		MyMemory::Modules::ModulesManager^ m_modulesManager;
 		MyMemory::Threads::ThreadsManager^ m_threadsManager;
 		MyMemory::Hooks::HooksManager^ m_hooksManager;
+		MyMemory::Patterns::PatternsManager^ m_patternsManager;
 		
 		// Methods
 	public:
@@ -61,6 +65,9 @@ namespace MyMemory {
 		}
 		property MyMemory::Hooks::HooksManager^ HooksManager {
 			MyMemory::Hooks::HooksManager^ get() { return m_hooksManager; }
+		}
+		property MyMemory::Patterns::PatternsManager^ PatternsManager {
+			MyMemory::Patterns::PatternsManager^ get() { return m_patternsManager; }
 		}
 		property unsigned int ProcessId {
 			unsigned int get() { return m_processId; }

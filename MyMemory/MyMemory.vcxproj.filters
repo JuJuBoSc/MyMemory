@@ -55,6 +55,12 @@
     <Filter Include="Fichiers d%27en-tête\Hooks">
       <UniqueIdentifier>{6de8cb14-4a13-46ed-8c82-e3243878b376}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Fichiers d%27en-tête\Patterns">
+      <UniqueIdentifier>{419a18e4-585f-4358-805c-40ab01e2986d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\Patterns">
+      <UniqueIdentifier>{8ce2a756-9861-44b6-93e8-e1382c98f1a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RemoteProcess.h">
@@ -132,6 +138,9 @@
     <ClInclude Include="Hooks\HookVmtCopy.h">
       <Filter>Fichiers d%27en-tête\Hooks</Filter>
     </ClInclude>
+    <ClInclude Include="Patterns\PatternsManager.h">
+      <Filter>Fichiers d%27en-tête\Patterns</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -205,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="Hooks\HookVmtCopy.cpp">
       <Filter>Fichiers sources\Hooks</Filter>
+    </ClCompile>
+    <ClCompile Include="Patterns\PatternsManager.cpp">
+      <Filter>Fichiers sources\Patterns</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

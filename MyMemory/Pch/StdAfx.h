@@ -31,3 +31,4 @@
 #include <Hooks/CallbackBase.h>
 #include <Hooks/CallbackExecutor.h>
 #include <Hooks/CallbackNotifier.h>
+#include <Patterns/PatternsManager.h>
