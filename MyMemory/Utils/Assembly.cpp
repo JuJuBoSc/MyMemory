@@ -39,8 +39,8 @@ array<String^>^ MyMemory::Utils::Assembly::Generate_SaveRegisters(IntPtr pBaseRe
 	asmSaveRegisters.Add(String::Format("pop r12"));
 	asmSaveRegisters.Add(String::Format("pop r11"));
 	asmSaveRegisters.Add(String::Format("pop r10"));
-	asmSaveRegisters.Add(String::Format("pop r8"));
 	asmSaveRegisters.Add(String::Format("pop r9"));
+	asmSaveRegisters.Add(String::Format("pop r8"));
 	asmSaveRegisters.Add(String::Format("pop rdi"));
 	asmSaveRegisters.Add(String::Format("pop rsi"));
 	asmSaveRegisters.Add(String::Format("pop rdx"));
