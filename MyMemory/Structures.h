@@ -20,8 +20,8 @@ namespace MyMemory {
 			IntPtr R12;
 			IntPtr R11;
 			IntPtr R10;
-			IntPtr R8;
 			IntPtr R9;
+			IntPtr R8;
 			IntPtr Rdi;
 			IntPtr Rsi;
 			IntPtr Rdx;
