@@ -87,6 +87,23 @@ array<String^>^ MyMemory::Utils::Assembly::Generate_PushRegistersAndFlags()
 	asmPushRegistersAndFlags.Add("push r14");
 	asmPushRegistersAndFlags.Add("push r15");
 	asmPushRegistersAndFlags.Add("pushfq");
+	asmPushRegistersAndFlags.Add("lea rsp,[rsp-16*16]");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*0],xmm0");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*1],xmm1");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*2],xmm2");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*3],xmm3");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*4],xmm4");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*5],xmm5");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*6],xmm6");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*7],xmm7");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*8],xmm8");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*9],xmm9");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*10],xmm10");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*11],xmm11");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*12],xmm12");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*13],xmm13");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*14],xmm14");
+	asmPushRegistersAndFlags.Add("vmovdqu [rsp+16*15],xmm15");
 #else
 	asmPushRegistersAndFlags.Add("pushad");
 	asmPushRegistersAndFlags.Add("pushfd");
@@ -100,6 +117,23 @@ array<String^>^ MyMemory::Utils::Assembly::Generate_PopRegistersAndFlags()
 	List<String^> asmPopRegistersAndFlags;
 
 #if _WIN64 || __amd64__
+	asmPopRegistersAndFlags.Add("vmovdqu xmm15,[rsp+16*15]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm14,[rsp+16*14]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm13,[rsp+16*13]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm12,[rsp+16*12]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm11,[rsp+16*11]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm10,[rsp+16*10]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm9,[rsp+16*9]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm8,[rsp+16*8]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm7,[rsp+16*7]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm6,[rsp+16*6]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm5,[rsp+16*5]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm4,[rsp+16*4]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm3,[rsp+16*3]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm2,[rsp+16*2]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm1,[rsp+16*1]");
+	asmPopRegistersAndFlags.Add("vmovdqu xmm0,[rsp+16*0]");
+	asmPopRegistersAndFlags.Add("lea rsp,[rsp+16*16]");
 	asmPopRegistersAndFlags.Add("popfq");
 	asmPopRegistersAndFlags.Add("pop r15");
 	asmPopRegistersAndFlags.Add("pop r14");
